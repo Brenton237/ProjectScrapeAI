@@ -1,0 +1,39 @@
+This Python script automates the process of scraping project data from multiple municipal websites, extracting and structuring the data using OpenAI's GPT-3.5-turbo, and standardizing the data for analysis or reporting. Here is a quick summary:
+
+1. **Imports and Setup**:
+   - The script imports necessary libraries, including Selenium for web scraping, BeautifulSoup for HTML parsing, pandas for data manipulation, and OpenAI's API for data extraction.
+   - Logging is configured to provide informative messages about the script's execution.
+   - The OpenAI API key is set from an environment variable.
+
+2. **Data Extraction and Structuring**:
+   - A function `extract_and_structure_data` uses OpenAI's GPT-3.5-turbo model to extract and structure relevant information from text descriptions.
+
+3. **Helper Function**:
+   - The `append_data` function appends extracted and structured data to a dictionary.
+   - detect_changes(): Checks if the content of a URL has changed since the last check.
+   - get_previous_hash() and save_current_hash(): Manage hash storage to detect changes.
+
+4. **Web Scraping**:
+   - The `scrape_website` function initializes a Selenium WebDriver, navigates to a given URL, and delegates the scraping task to specific functions (`scrape_richmond`, `scrape_eurekaca`, or `scrape_generic`) based on the URL.
+   - `scrape_richmond` and `scrape_eurekaca` are tailored for Richmond and EurekaCA websites, respectively, handling their unique structures.
+   - `scrape_generic` provides a fallback method for other sites, extracting data from HTML tables.
+
+5. **Data Standardization**:
+   - The `standardize_data` function formats the scraped data into a predefined structure, making it uniform across different sources.
+
+6. **Scheduling the Script with Cron**
+Open the crontab file:
+sh
+crontab -e
+
+Add a cron job to run the script daily:
+sh
+
+0 0 * * * /usr/bin/python3 /path/to/your/script.py
+This setup will check for website changes daily at midnight, scrape new data if changes are detected, and update the CSV file accordingly.
+
+7. **Main Execution**:
+   - The script iterates over a list of URLs, scrapes data from each, standardizes it, and concatenates all data into a single pandas DataFrame.
+   - Finally, the consolidated data is saved to a CSV file.
+
+This script efficiently collects, processes, and standardizes project data from various sources, leveraging both web scraping and AI for robust data extraction and structuring.
